@@ -132,7 +132,7 @@ function touchStarted(){
     osc[9].fade(vol,0.2);
   }else{
     for(var i = 0; i < notes.length; i++){
-      osc[i].amp(0);
+      osc[i].freq(0);
     }
   }
 
@@ -141,7 +141,7 @@ function touchStarted(){
 
 function touchEnded(){
   for (var i = 0; i < notes.length; i++) {
-    osc[i].amp(0);
+    osc[i].fade(0,0.2);
   }
 }
 
