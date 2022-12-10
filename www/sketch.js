@@ -3,12 +3,12 @@ let osc = [];
 let btnName = ["C","CP","D","DP","E","F","FP","G","A","B"];
 let name = ["도","도#","레","레#","미","파","파#","솔","라","시"];
 let permission = false;
-let r = 5;
+let r;
 
 function setup(){
   createCanvas(windowWidth+200,windowHeight);
   for (var j = 0; j < 17; j++) {
-    osc.push(new p5.TriOsc());
+    osc.push(new p5.Oscillator("sine"));
     osc[j].amp(0);
   }
   if(typeof DeviceMotionEvent.requestPermission === "function"){
@@ -31,6 +31,27 @@ function setup(){
     plusBtn.mousePressed(plus);
     minBtn.mousePressed(minus);
   }
+  else{
+    let a
+    let b = windowWidth / notes.length;
+    for (var i = 0; i < notes.length; i++) {
+      a = i * b;
+      btnName[i] = createButton(name[i]);
+      btnName[i].size(windowWidth/10,windowHeight);
+      btnName[i].position(a,0);
+    }
+    accessBtn = createButton("Click to iOS Sensor");
+    accessBtn.mousePressed(iosAccess);
+    plusBtn = createButton("+");
+    minBtn = createButton("-");
+    minBtn.size(50,50);
+    plusBtn.size(50,50);
+    plusBtn.position(windowWidth+50,0);
+    minBtn.position(windowWidth+100,0);
+    plusBtn.mousePressed(plus);
+    minBtn.mousePressed(minus);
+  }
+ 
 }
 let vol = 0.5;
 function plus(){
@@ -56,10 +77,10 @@ function draw(){
   }
   
   if(!permission) return;
-  background(255,255,255);
-  textSize(73);
+  //background(255,255,255);
+  textSize(12);
   r = floor(map(rotationX, 0, 180, 0,10));
-  text(r,windowWidth/2,windowHeight+10);
+  text("기울기 : "+r,windowWidth+10,100);
   if(r < 0){
     r = 0;
   }
@@ -69,6 +90,7 @@ function draw(){
 
 let keys01,keys02,keys03;
 function touchStarted(){
+  getAudioContext().resume();
   background(255);
   text("touches.length : "+touches.length,windowWidth+10,180);
   if(touches.length === 1){
