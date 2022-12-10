@@ -1,19 +1,15 @@
-// The midi notes of a scale
-var notes = [ 60, 61, 62, 63, 64, 65 , 66, 67, 69, 71];
-var osc;
+let notes = [ 60, 61, 62, 63, 64, 65 , 66, 67, 69, 71];
+let osc = [];
 let btnName = ["C","CP","D","DP","E","F","FP","G","A","B"];
 let name = ["도","도#","레","레#","미","파","파#","솔","라","시"];
 let permission = false;
-let r = 0;
-let x,y,z = 0;
-let len = 0;
 
-function setup() {
-  createCanvas(windowWidth+150,windowHeight+20);
-    // A triangle oscillator
-  osc = new p5.TriOsc();
-  // Start silent
-  osc.amp(0);
+function setup(){
+  createCanvas(windowWidth+200,windowHeight);
+  for (var j = 0; j < 17; j++) {
+    osc.push(new p5.TriOsc());
+    osc[j].amp(0);
+  }
   if(typeof DeviceMotionEvent.requestPermission === "function"){
     let a
     let b = windowWidth / notes.length;
@@ -23,10 +19,6 @@ function setup() {
       btnName[i].size(windowWidth/10,windowHeight);
       btnName[i].position(a,0);
     }
-    /*C = createButton(null);
-    D = createButton(null);
-    E= createButton(null);
-    F = createButton(null);*/
     accessBtn = createButton("Click to iOS Sensor");
     accessBtn.mousePressed(iosAccess);
     plusBtn = createButton("+");
@@ -37,37 +29,8 @@ function setup() {
     minBtn.position(windowWidth+100,0);
     plusBtn.mousePressed(plus);
     minBtn.mousePressed(minus);
-    /*C.size(50,50);
-    D.size(50,50);
-    E.size(50,50);
-    C.mousePressed(playC);
-    D.mousePressed(playD);
-    E.mousePressed(playE);
-    F.mousePressed(playF);*/
-
   }
-
-    /*C = createButton(null);
-    D = createButton(null);
-    E= createButton(null);
-    F = createButton(null);*/
-
 }
-/*
-function playC(){
-  playNote(notes[0]); 
-  print("C");
-}
-function playD(){
-  playNote(notes[1]); 
-  print("D");
-}
-function playE(){
-  playNote(notes[2]); 
-}
-function playF(){
-  playNote(notes[3]); 
-}*/
 let vol = 0.5;
 function plus(){
   if(vol <= 1){
@@ -85,25 +48,8 @@ function minus(){
   }
   print(vol);
 }
-// A function to play a note
-function playNote(note, duration) {
-  osc.start();
-  osc.freq(midiToFreq(note));
-  // Fade it in
-  
-  osc.fade(vol,0.2);
-
-  // If we sest a duration, fade it out
-  if (duration) {
-    setTimeout(function() {
-      osc.fade(0,0.2);
-    }, duration-50);
-  }
-}
-
-
 function draw(){
-  //text(x, windowWidth+90,200);
+  //text("S", windowWidth+90,200);
   if(vol>1 || vol<0){
     //osc.freq(0);
   }
@@ -119,81 +65,84 @@ function draw(){
   notes = [0+(12*r),1+(12*r),2+(12*r),3+(12*r),4+(12*r),5+(12*r),
            6+(12*r),7+(12*r),8+(12*r),9+(12*r),10+(12*r),11+(12*r)];
 }
+
 let keys01,keys02,keys03;
 function touchStarted(){
   background(255);
-  text("touches.length : "+touches.length,windowWidth+10,200);
-  text("touches[0] : "+touches[0].x,windowWidth+10,220);
-  text("touches[1] : "+touches[1].x,windowWidth+10,240);
-  x=touches[0].x;
-  y = touches[1].x;
-  len = touches.length;
-  /*if(len === 1){
-    keys01 = floor(map(x, 0, windowWidth, 0, notes.length));
-    playNote(notes[keys01]); 
-    text("len1 == "+len,windowWidth+10,300);
+  text("touches.length : "+touches.length,windowWidth+10,180);
+  if(touches.length === 1){
+    keys01 = floor(map(touches[0].x, 0, windowWidth, 0, notes.length));
+    text("touches[0] : "+keys01,windowWidth+10,200);
   }
-  else if(len === 2){
-    keys01 = floor(map(x, 0, windowWidth, 0, notes.length));
-    playNote(notes[keys01]); 
+  else if(touches.length === 2){
+    keys01 = floor(map(touches[0].x, 0, windowWidth, 0, notes.length));
+    text("touches[0] : "+keys01,windowWidth+10,200);
     keys02 = floor(map(touches[1].x, 0, windowWidth, 0, notes.length));
-    playNote(notes[keys02]); 
-    text("len22222== "+len,windowWidth+10,300);
+    text("touches[1] : "+keys02,windowWidth+10,220);
   }
-  else if(len === 3){
-    keys01 = floor(map(x, 0, windowWidth, 0, notes.length));
-    playNote(notes[keys01]); 
+  else if(touches.length === 3){
+    keys01 = floor(map(touches[0].x, 0, windowWidth, 0, notes.length));
+    text("touches[0] : "+keys01,windowWidth+10,200);
     keys02 = floor(map(touches[1].x, 0, windowWidth, 0, notes.length));
-    playNote(notes[keys02]); 
+    text("touches[1] : "+keys02,windowWidth+10,220);
     keys03 = floor(map(touches[2].x, 0, windowWidth, 0, notes.length));
-    playNote(notes[keys03]); 
-    text("len3== "+len,windowWidth+10,300);
-  }<--남소리가 안남*/
-  // Map mouse to the key index
-  //keys01 = floor(map(x, 0, windowWidth, 0, notes.length));
-  //playNote(notes[keys01]); 
-}
-/*touches.length : (touchStarted 함수에서) 랑 len : (mousePressed) 랑 값이 다름..
-  touches.length : 1이면 len : 0 나오고 2이상은 일치함..?
-  len은 2개 누른 다음에 하나 누르면 len 1이 작동 안됨 lem 3은 작동 됨 
-*/
-
-function mousePressed() {
-  text("len : "+len,windowWidth+10,320);
-  if(len === 0){
-    keys01 = floor(map(mouseX, 0, windowWidth, 0, notes.length));
-    playNote(notes[keys01]); 
-    text("len2 == "+len,windowWidth+10,300);
+    text("touches[2] : "+keys03,windowWidth+10,240);
   }
-  else if(len === 2){
-    keys01 = floor(map(x, 0, windowWidth, 0, notes.length));
-    playNote(notes[keys01]); 
-    keys02 = floor(map(mouseX, 0, windowWidth, 0, notes.length));
-    playNote(notes[keys02]); 
-    text("len22222== "+len,windowWidth+10,300);
+  
+  if (keys01 === 0 || keys02 === 0 || keys03 ===0) {
+    osc[0].start();
+    osc[0].freq(midiToFreq(notes[0]));
+    osc[0].fade(vol,0.2);
+  } else if (keys01 === 1|| keys02 === 1 || keys03 === 1) {
+    osc[1].start();
+    osc[1].freq(midiToFreq(notes[1]));
+    osc[1].fade(vol,0.2);
+  } else if (keys01 === 2 || keys02 === 2 || keys03 === 2) {
+    osc[2].start();
+    osc[2].freq(midiToFreq(notes[2]));
+    osc[2].fade(vol,0.2);
+  } else if (keys01 === 3 || keys02 === 3 || keys03 === 3) {
+    osc[3].start();
+    osc[3].freq(midiToFreq(notes[3]));
+    osc[3].fade(vol,0.2);
+  } else if (keys01 === 4 || keys02 === 4 || keys03 === 4) {
+    osc[4].start();
+    osc[4].freq(midiToFreq(notes[4]));
+    osc[4].fade(vol,0.2);
+  } else if (keys01 === 5 || keys02 === 5 || keys03 === 5) {
+    osc[5].start();
+    osc[5].freq(midiToFreq(notes[5]));
+    osc[5].fade(vol,0.2);
+  } else if (keys01 === 6 || keys02 === 6 || keys03 === 6) {
+    osc[6].start();
+    osc[6].freq(midiToFreq(notes[6]));
+    osc[6].fade(vol,0.2);
+  } else if (keys01 === 7 || keys02 === 7 || keys03 === 7) {
+    osc[7].start();
+    osc[7].freq(midiToFreq(notes[7]));
+    osc[7].fade(vol,0.2);
+  } else if (keys01 === 8 || keys02 === 8 || keys03 === 8) {
+    osc[8].start();
+    osc[8].freq(midiToFreq(notes[8]));
+    osc[8].fade(vol,0.2);
+  } else if (keys01 === 9 || keys02 === 9 || keys03 === 9) {
+    osc[9].start();
+    osc[9].freq(midiToFreq(notes[9]));
+    osc[9].fade(vol,0.2);
+  }else{
+    //
   }
-  else if(len === 3){
-    keys01 = floor(map(x, 0, windowWidth, 0, notes.length));
-    playNote(notes[keys01]); 
-    keys02 = floor(map(y, 0, windowWidth, 0, notes.length));
-    playNote(notes[keys02]); 
-    keys03 = floor(map(x, 0, windowWidth, 0, notes.length));
-    playNote(notes[keys03]); 
-    text("len3== "+len,windowWidth+10,300);
-  }//->3개 누른 상태에서 2개 손가락 고정시키고 1개 가지고 소리 내면 x 위치 소리만 남
-  //3개 동시에 소리가 안남....
-  // Map mouse to the key index
-  //keys01 = floor(map(x, 0, windowWidth, 0, notes.length));
-  //playNote(notes[keys01]); 
 
-  text("mouseX : "+mouseX,windowWidth+10,260);
-  text("x : "+x,windowWidth+10,280);
+  
 }
 
-// Fade it out when we release
-function mouseReleased() {
-  osc.fade(0,vol);
+function touchEnded(){
+  for (var i = 0; i < notes.length; i++) {
+    osc[i].fade(0,vol);
+  }
 }
+
+
 
 function iosAccess(){
   DeviceOrientationEvent.requestPermission()
