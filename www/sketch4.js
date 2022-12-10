@@ -61,7 +61,7 @@ function draw(){
   r = floor(map(rotationX, 0, 180, 0,10));
   text(r,windowWidth/2,windowHeight+10);
   if(r < 0){
-    r = 0;
+    r = -1;
   }
   notes = [0+(12*r),1+(12*r),2+(12*r),3+(12*r),4+(12*r),5+(12*r),
            6+(12*r),7+(12*r),8+(12*r),9+(12*r),10+(12*r),11+(12*r)];
