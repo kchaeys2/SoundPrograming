@@ -140,7 +140,7 @@ function touchStarted(){
 
 function touchEnded(){
   for (var i = 0; i < notes.length; i++) {
-    osc[i].fade(0,vol);
+    osc[i].fade(0);
   }
 }
 
