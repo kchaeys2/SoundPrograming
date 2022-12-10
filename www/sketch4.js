@@ -3,7 +3,6 @@ let osc = [];
 let btnName = ["C","CP","D","DP","E","F","FP","G","A","B"];
 let name = ["도","도#","레","레#","미","파","파#","솔","라","시"];
 let permission = false;
-let r = 5;
 
 function setup(){
   createCanvas(windowWidth+200,windowHeight);
@@ -131,7 +130,9 @@ function touchStarted(){
     osc[9].freq(midiToFreq(notes[9]));
     osc[9].fade(vol,0.2);
   }else{
-    //
+    for(var i = 0; i < notes.length; i++){
+      osc[i].amp(0);
+    }
   }
 
   
