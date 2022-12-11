@@ -38,14 +38,14 @@ function setup(){
 }
 let vol = 0.5;
 function plus(){
-  if(vol < 1){
+  if(vol < 1.0){
     vol+=0.1;
   }else{
     vol = 1;
   }
 }
 function minus(){
-  if(vol > 0){
+  if(vol > 0.0){
     vol-=0.1;
   }else{
     vol = 0;
