@@ -1,16 +1,18 @@
-let notes = [ 60, 61, 62, 63, 64, 65 , 66, 67, 69, 71];
+let r = 4;
+let notes = [12+(12*r),13+(12*r),14+(12*r),15+(12*r),16+(12*r),17+(12*r),
+           18+(12*r),19+(12*r),21+(12*r),23+(12*r)];
 let osc = [];
 let btnName = ["C","CP","D","DP","E","F","FP","G","A","B"];
 let name = ["도","도#","레","레#","미","파","파#","솔","라","시"];
 let permission = false;
-let r;
 
 function setup(){
   createCanvas(windowWidth+200,windowHeight);
-  for (var j = 0; j < 17; j++) {
+  for (var j = 0; j < notes.length; j++) {
     osc.push(new p5.Oscillator("sine"));
     osc[j].amp(0);
   }
+  textSize(12);
   if(typeof DeviceMotionEvent.requestPermission === "function"){
     let a
     let b = windowWidth / notes.length;
@@ -20,8 +22,10 @@ function setup(){
       btnName[i].size(windowWidth/10,windowHeight);
       btnName[i].position(a,0);
     }
-    accessBtn = createButton("Click to iOS Sensor");
+    accessBtn = createButton("기울기 활성화");
     accessBtn.mousePressed(iosAccess);
+    accessBtn.size(100,50);
+    accessBtn.position(windowWidth+50,windowHeight/2);
     plusBtn = createButton("+");
     minBtn = createButton("-");
     minBtn.size(50,50);
@@ -55,12 +59,11 @@ function setup(){
 }
 let vol = 0.5;
 function plus(){
-  if(vol <= 1){
+  if(vol < 1){
     vol+=0.1;
   }else{
     vol = 1;
   }
-  print(vol);
 }
 function minus(){
   if(vol > 0){
@@ -68,31 +71,31 @@ function minus(){
   }else{
     vol = 0;
   }
-  print(vol);
 }
 function draw(){
   //text("S", windowWidth+90,200);
   if(vol>1 || vol<0){
     //osc.freq(0);
   }
-  
+  text("볼륨 : "+vol ,windowWidth+10,160);
   if(!permission) return;
   //background(255,255,255);
   textSize(12);
-  r = floor(map(rotationX, 0, 180, 0,10));
+  r = floor(map(rotationX, 0, 180, 0,8));
+  r++;
   text("기울기 : "+r,windowWidth+10,100);
-  if(r < 0){
-    r = 0;
-  }
-  notes = [0+(12*r),1+(12*r),2+(12*r),3+(12*r),4+(12*r),5+(12*r),
-           6+(12*r),7+(12*r),8+(12*r),9+(12*r),10+(12*r),11+(12*r)];
+
+  notes = [12+(12*r),13+(12*r),14+(12*r),15+(12*r),16+(12*r),17+(12*r),
+           18+(12*r),19+(12*r),21+(12*r),23+(12*r)];
 }
 
 let keys01,keys02,keys03;
+let len;
 function touchStarted(){
   getAudioContext().resume();
   background(255);
   text("touches.length : "+touches.length,windowWidth+10,180);
+  len = touches.length;
   if(touches.length === 1){
     keys01 = floor(map(touches[0].x, 0, windowWidth, 0, notes.length));
     text("touches[0] : "+keys01,windowWidth+10,200);
@@ -153,22 +156,18 @@ function touchStarted(){
     osc[9].freq(midiToFreq(notes[9]));
     osc[9].fade(vol,0.2);
   }else{
-    for(var i = 0; i < notes.length; i++){
-      osc[i].freq(0);
-    }
+    osc.amp(0);
   }
-
-  
 }
 
 function touchEnded(){
   for (var i = 0; i < notes.length; i++) {
-    osc[i].fade(0,0.2);
+    osc[i].fade(0,vol);
   }
 }
 
 
-
+//draw()활성화
 function iosAccess(){
   DeviceOrientationEvent.requestPermission()
     .then((response)=>{
