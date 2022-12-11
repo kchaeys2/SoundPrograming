@@ -59,7 +59,7 @@ function draw(){
   }
   text("볼륨 : "+vol ,windowWidth+10,160);
   if(!permission) return;
-  //background(255,255,255);
+  background(255,255,255);
   r = floor(map(rotationX, 0, 180, 0,8));
   r++;
   text("기울기 : "+r,windowWidth+10,100);
@@ -72,7 +72,7 @@ let keys01,keys02,keys03;
 let len;
 function touchStarted(){
   getAudioContext().resume();
-  //background(255);
+  background(255);
   text("touches.length : "+touches.length,windowWidth+10,180);
   len = touches.length;
   if(touches.length === 1){
