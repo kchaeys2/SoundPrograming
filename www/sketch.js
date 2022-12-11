@@ -1,6 +1,5 @@
-let r = 4;
-let notes = [12+(12*r),13+(12*r),14+(12*r),15+(12*r),16+(12*r),17+(12*r),
-           18+(12*r),19+(12*r),21+(12*r),23+(12*r)];
+let r ;
+let notes = [60,61,62,63,64,65,66,67,69,71];
 let osc = [];
 let btnName = ["C","CP","D","DP","E","F","FP","G","A","B"];
 let name = ["도","도#","레","레#","미","파","파#","솔","라","시"];
@@ -22,30 +21,10 @@ function setup(){
       btnName[i].size(windowWidth/10,windowHeight);
       btnName[i].position(a,0);
     }
-    accessBtn = createButton("기울기 활성화");
+    accessBtn = createButton("다 체크하고 마지막에 눌러주세요 --> 기울기 활성화");
     accessBtn.mousePressed(iosAccess);
     accessBtn.size(100,50);
     accessBtn.position(windowWidth+50,windowHeight/2);
-    plusBtn = createButton("+");
-    minBtn = createButton("-");
-    minBtn.size(50,50);
-    plusBtn.size(50,50);
-    plusBtn.position(windowWidth+50,0);
-    minBtn.position(windowWidth+100,0);
-    plusBtn.mousePressed(plus);
-    minBtn.mousePressed(minus);
-  }
-  else{
-    let a
-    let b = windowWidth / notes.length;
-    for (var i = 0; i < notes.length; i++) {
-      a = i * b;
-      btnName[i] = createButton(name[i]);
-      btnName[i].size(windowWidth/10,windowHeight);
-      btnName[i].position(a,0);
-    }
-    accessBtn = createButton("Click to iOS Sensor");
-    accessBtn.mousePressed(iosAccess);
     plusBtn = createButton("+");
     minBtn = createButton("-");
     minBtn.size(50,50);
@@ -74,13 +53,13 @@ function minus(){
 }
 function draw(){
   //text("S", windowWidth+90,200);
+  background(255,255,255);
   if(vol>1 || vol<0){
     //osc.freq(0);
   }
   text("볼륨 : "+vol ,windowWidth+10,160);
   if(!permission) return;
   //background(255,255,255);
-  textSize(12);
   r = floor(map(rotationX, 0, 180, 0,8));
   r++;
   text("기울기 : "+r,windowWidth+10,100);
@@ -93,7 +72,7 @@ let keys01,keys02,keys03;
 let len;
 function touchStarted(){
   getAudioContext().resume();
-  background(255);
+  //background(255);
   text("touches.length : "+touches.length,windowWidth+10,180);
   len = touches.length;
   if(touches.length === 1){
@@ -156,7 +135,7 @@ function touchStarted(){
     osc[9].freq(midiToFreq(notes[9]));
     osc[9].fade(vol,0.2);
   }else{
-    osc.amp(0);
+    osc.amp(0,0.2);
   }
 }
 
