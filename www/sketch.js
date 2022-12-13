@@ -21,7 +21,7 @@ function setup(){
       btnName[i].size(windowWidth/10,windowHeight);
       btnName[i].position(a,0);
     }
-    accessBtn = createButton("다 체크하고 마지막에 눌러주세요 --> 기울기 활성화");
+    accessBtn = createButton("기울기 활성화");
     accessBtn.mousePressed(iosAccess);
     accessBtn.size(100,50);
     accessBtn.position(windowWidth+50,windowHeight/2);
@@ -53,13 +53,13 @@ function minus(){
 }
 function draw(){
   //text("S", windowWidth+90,200);
-  background(255,255,255);
+  //background(255,255,255);
   if(vol>1 || vol<0){
     //osc.freq(0);
   }
   text("볼륨 : "+vol ,windowWidth+10,160);
   if(!permission) return;
-  background(255,255,255);
+  //background(255,255,255);
   r = floor(map(rotationX, 0, 180, 0,8));
   r++;
   text("기울기 : "+r,windowWidth+10,100);
@@ -135,7 +135,7 @@ function touchStarted(){
     osc[9].freq(midiToFreq(notes[9]));
     osc[9].fade(vol,0.2);
   }else{
-    osc.amp(0,0.2);
+    osc.amp(0);
   }
 }
 
